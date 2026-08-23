@@ -37,9 +37,9 @@ Reference it from the project's robot file by its path under `node_modules` usin
 <summary>For Claude Code</summary>
 
 ```md
-@node_modules/@aneuhold/robot-instructions/src/instructions/typescript.md
+@node_modules/@aneuhold/robot-instructions/src/instructions/lang/typescript.md
 
-@node_modules/@aneuhold/robot-instructions/src/instructions/node.md
+@node_modules/@aneuhold/robot-instructions/src/instructions/runtime/node.md
 ```
 
 ---
@@ -68,9 +68,9 @@ The import then reads:
 
 ## Framework
 
-@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/react.md
+@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/svelte.md
 
-@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/nextjs.md
+@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/sveltekit.md
 ```
 
 `~/.claude` is not an ancestor of a project directory, so its `node_modules` stays invisible to project builds.
