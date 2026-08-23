@@ -1,0 +1,31 @@
+name: 'Main Branch Actions'
+
+on:
+  push:
+    # Only initiate the workflow when the main branch is pushed to
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: 'Publish'
+    runs-on: ubuntu-latest
+    permissions:
+      # Required for actions that use OIDC to access other resources (like npm publish)
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+          # It seems this may be required for OIDC to work properly, because it pulls in something
+          # related to auth according to the documentation: https://github.com/actions/setup-node
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npm
+        run: |
+          npm install -g npm@latest
+          npm publish --access public
