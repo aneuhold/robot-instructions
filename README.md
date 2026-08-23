@@ -64,7 +64,13 @@ Run `pnpm init` first if `~/.claude/package.json` does not exist.
 The import then reads:
 
 ```md
-@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/typescript.md
+# Some overall title
+
+## Framework
+
+@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/react.md
+
+@~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/nextjs.md
 ```
 
 `~/.claude` is not an ancestor of a project directory, so its `node_modules` stays invisible to project builds.
