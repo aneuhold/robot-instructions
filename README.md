@@ -1,5 +1,7 @@
 # robot-instructions
 
+[![NPM](https://img.shields.io/npm/v/%40aneuhold%2Frobot-instructions)](https://www.npmjs.com/package/@aneuhold/robot-instructions)
+
 A collection of organized markdown instructions and skills for AI coding agents, published to npm as `@aneuhold/robot-instructions`.
 
 ## 📥 Consuming
