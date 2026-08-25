@@ -2,18 +2,18 @@
 
 Source of the shared instruction files published as `@aneuhold/robot-instructions`. Everything under `src/` is consumed by reference from another instruction file.
 
-## The paste model
+## How these files reach context
 
-A reference like `@node_modules/@aneuhold/robot-instructions/src/instructions/lang/typescript.md` behaves as if that file's full text sits at that spot in the consuming file.
+A reference like `@node_modules/@aneuhold/robot-instructions/src/instructions/lang/typescript.md` does not splice that file's text into the consuming file. The reference line stays literal where it sits, and the referenced file arrives as its own labeled block after the consuming file. Files linked into a rules directory arrive the same way.
 
 This package is one layer, not the only location for instructions. A consuming file references the layers it stands on, then adds whatever is specific to that machine or repo below them. Paths, aliases, script names, org slugs, and machine policy belong in that local text, not here.
 
 Two things follow.
 
-**Formatting has to be identical across every file here**, since several land in the same document:
+**Formatting has to be identical across every file here**, since they arrive as sibling blocks in one context:
 
-- Exactly one `###` per file, on the first line, naming the layer. Never `#` or `##`, which belong to the consumer.
+- Exactly one `###` per file, on the first line, naming the layer. Consistent depth across siblings, and `#` and `##` stay free for the consumer.
 - `####` for sections. Sections chosen are up to the file.
 - No scope line in the body. The file path states the scope.
 
-**Every file has to stand alone.** No references to another file in this package, to a repo, to a path, or to "above" and "below". Position and neighbors vary per consumer.
+**Every file has to stand alone.** Each one arrives as its own block, and which neighbors it has, if any, varies per consumer. No references to another file in this package, to a repo, to a path, or to "above" and "below".
