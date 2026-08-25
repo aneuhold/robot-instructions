@@ -39,10 +39,18 @@ Reference it from the project's robot file by its path under `node_modules` usin
 <summary>For Claude Code</summary>
 
 ```md
-@node_modules/@aneuhold/robot-instructions/src/instructions/lang/typescript.md
+# Some overall title
 
+Your normal instructions or caveats to the project instructions
+
+<!-- Always put these at the bottom. Order matters, but the placement does not, so it's better to put
+it where it will end up being output in the context window anyway -->
+
+@node_modules/@aneuhold/robot-instructions/src/instructions/lang/typescript.md
 @node_modules/@aneuhold/robot-instructions/src/instructions/runtime/node.md
 ```
+
+Each referenced file is appended as its own labeled block after the referencing file. It is not spliced in at the `@` line, which stays literal where it sits. Files linked into `.claude/rules/` are delivered the same way.
 
 ---
 
@@ -68,10 +76,11 @@ The import then reads:
 ```md
 # Some overall title
 
-## Framework
+Your general instructions
+
+<!-- Leave the references at the bottom -->
 
 @~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/svelte.md
-
 @~/.claude/node_modules/@aneuhold/robot-instructions/src/instructions/framework/sveltekit.md
 ```
 
