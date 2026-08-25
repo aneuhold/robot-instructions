@@ -8,8 +8,6 @@ A reference like `@node_modules/@aneuhold/robot-instructions/src/instructions/la
 
 This package is one layer, not the only location for instructions. A consuming file references the layers it stands on, then adds whatever is specific to that machine or repo below them. Paths, aliases, script names, org slugs, and machine policy belong in that local text, not here.
 
-Two things follow.
-
 **Formatting has to be identical across every file here**, since they arrive as sibling blocks in one context:
 
 - Exactly one `###` per file, on the first line, naming the layer. Consistent depth across siblings, and `#` and `##` stay free for the consumer.
@@ -17,3 +15,8 @@ Two things follow.
 - No scope line in the body. The file path states the scope.
 
 **Every file has to stand alone.** Each one arrives as its own block, and which neighbors it has, if any, varies per consumer. No references to another file in this package, to a repo, to a path, or to "above" and "below".
+
+**Every word costs context**, since these files load into every session that references them:
+
+- Cut anything that restates a neighboring line, explains itself, or hedges. State a rule once, in as few words as carry it.
+- Fold a new rule into the line or section already covering its subject. A fresh bullet or section is the last resort, for a subject nothing here names yet.
