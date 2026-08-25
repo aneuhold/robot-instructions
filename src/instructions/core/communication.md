@@ -11,7 +11,7 @@
 #### Wording
 
 - Never use em-dashes anywhere: prose, code comments, commit messages, PR descriptions, slides, and these instruction files. Use commas, periods, colons, semicolons, or parentheses instead.
-- Write technical reference: headings state their subject plainly, sentences carry facts.
+- Write technical reference: headings state their subject plainly, sentences carry facts. A claim about a framework, language, library, runtime, or CLI is a fact only with a link to the official docs, read before citing; lacking one, say what the claim rests on instead (source, changelog, a command run).
 - IMPORTANT: use the exact name the code and schema already use for a type, table, or column. Search for a name before introducing it. Two failures, both expensive:
   - Inventing a synonym for something already named: "subscribers" for `PackageSubscriber`.
   - Reusing a name that does exist for a concept it does not name. This is the worse one, because the text reads as correct to everyone who knows the codebase.
