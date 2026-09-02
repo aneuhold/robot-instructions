@@ -1,4 +1,4 @@
-name: 'Main Branch Actions'
+name: "Main Branch Actions"
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   publish:
-    name: 'Publish'
+    name: "Publish"
     runs-on: ubuntu-latest
     permissions:
       # Required for actions that use OIDC to access other resources (like npm publish)
@@ -19,11 +19,6 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-          # It seems this may be required for OIDC to work properly, because it pulls in something
-          # related to auth according to the documentation: https://github.com/actions/setup-node
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm
         run: |
