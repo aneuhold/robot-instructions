@@ -7,3 +7,4 @@
 - If something isn't being used outside of the file it is defined in, then don't export it.
 - If you need to create something new, try to organize it among the existing items that are similar.
 - Never run `git commit`. Do not commit at phase boundaries, at end of session, or after verification passes. Commits are always manual.
+- Never force-push. The git history is meant to be a history. You don't attempt to erase parts. The human can do this. Not you.
