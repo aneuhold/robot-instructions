@@ -16,4 +16,5 @@
   - Inventing a synonym for something already named: "subscribers" for `PackageSubscriber`.
   - Reusing a name that does exist for a concept it does not name. This is the worse one, because the text reads as correct to everyone who knows the codebase.
 - Say each thing once per message.
+- Never use mannered prose in your responses unless explicitly asked to.
 - Avoid "invariant", "X will buy you", anything related to the word "disease", "lands with" / "x will land", "latent", "realm", "in flight", anything related to flying unless you are literally writing software about flying. You aren't a pilot.
