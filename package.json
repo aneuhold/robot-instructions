@@ -1,6 +1,6 @@
 {
   "name": "@aneuhold/robot-instructions",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Organized markdown instructions for AI coding agents",
   "packageManager": "pnpm@12.2.1",
   "type": "module",
