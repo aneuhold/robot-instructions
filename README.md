@@ -6,24 +6,30 @@ A collection of organized markdown instructions and skills for AI coding agents,
 
 ## 📥 Consuming
 
-These files are meant to be referenced directly from a markdown instruction file rather than read through code.
+Instructions are meant to be referenced directly from a markdown instruction file, and skills are meant to be symlinked into a skills directory. Neither is read through code.
 
 See docs for different tools:
 
 - [Claude Code file imports](https://code.claude.com/docs/en/memory#import-additional-files) (`@path/to/import` syntax)
+- [Claude Code skills](https://code.claude.com/docs/en/skills) (symlinked skill folders)
 
 ### Updating
 
-Update every global location the package is installed in:
+Update every global location the package is installed in, and link its skills:
 
 ```sh
 for dir in ~/.claude; do
-  [ -d "$dir/node_modules/@aneuhold/robot-instructions" ] &&
-    (cd "$dir" && pnpm update --latest @aneuhold/robot-instructions)
+  package="$dir/node_modules/@aneuhold/robot-instructions"
+  [ -d "$package" ] || continue
+  (cd "$dir" && pnpm update --latest @aneuhold/robot-instructions)
+  mkdir -p "$dir/skills"
+  for skill in "$package"/src/skills/*/; do
+    ln -sfn "${skill%/}" "$dir/skills/$(basename "$skill")"
+  done
 done
 ```
 
-Locations without the package installed are skipped. Add further paths to the `for` list as other global locations come into use.
+Locations without the package installed are skipped. Add further paths to the `for` list as other global locations come into use. Re-running is safe, since `ln -sfn` replaces a skill's existing link instead of nesting a new one inside it.
 
 ### Project scope
 
