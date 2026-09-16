@@ -1,6 +1,6 @@
 # robot-instructions
 
-Source of the shared instructions and skills published as `@aneuhold/robot-instructions`. Instructions under `src/instructions/` are consumed by reference from another instruction file. Skills under `src/skills/` are consumed by symlinking each skill folder into a skills directory, so a folder's name is the name the skill is invoked by.
+Source of the shared instructions, skills, and status line scripts published as `@aneuhold/robot-instructions`. Instructions under `src/instructions/` are consumed by reference from another instruction file. Skills under `src/skills/` are consumed by symlinking each skill folder into a skills directory, so a folder's name is the name the skill is invoked by. Status line scripts under `src/statuslines/` are consumed by pointing a tool's status line command at the file's path inside `node_modules`.
 
 ## How instructions reach context
 

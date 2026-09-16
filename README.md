@@ -2,16 +2,17 @@
 
 [![NPM](https://img.shields.io/npm/v/%40aneuhold%2Frobot-instructions)](https://www.npmjs.com/package/@aneuhold/robot-instructions)
 
-A collection of organized markdown instructions and skills for AI coding agents, published to npm as `@aneuhold/robot-instructions`.
+A collection of organized markdown instructions, skills, and status line scripts for AI coding agents, published to npm as `@aneuhold/robot-instructions`.
 
 ## 📥 Consuming
 
-Instructions are meant to be referenced directly from a markdown instruction file, and skills are meant to be symlinked into a skills directory. Neither is read through code.
+Instructions are meant to be referenced directly from a markdown instruction file, skills are meant to be symlinked into a skills directory, and status line scripts are meant to be run by path. None of it is read through code.
 
 See docs for different tools:
 
 - [Claude Code file imports](https://code.claude.com/docs/en/memory#import-additional-files) (`@path/to/import` syntax)
 - [Claude Code skills](https://code.claude.com/docs/en/skills) (symlinked skill folders)
+- [Claude Code status lines](https://code.claude.com/docs/en/statusline)
 
 ### Updating
 
@@ -96,6 +97,30 @@ Your general instructions
 
 </details>
 
+### Status lines
+
+`src/statuslines/` holds shell scripts that run the "status line" concept in various robot systems.
+
+- `context-usage.sh` shows context-window usage and nothing else: `ctx 27% (54k/1M)`, with the percentage green below 50, yellow from 50, and red from 80.
+
+<details>
+<summary>For Claude Code</summary>
+
+Add the script to `~/.claude/settings.json`:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/node_modules/@aneuhold/robot-instructions/src/statuslines/context-usage.sh"
+  }
+}
+```
+
+---
+
+</details>
+
 ## 🚀 Publishing
 
 Just bump the version and push it up to main. To do both at once run:
@@ -111,7 +136,8 @@ All published content lives under `src/`, grouped by kind:
 ```
 src/
 ├── instructions/   # Instruction documents
-└── skills/         # Skill documents
+├── skills/         # Skill documents
+└── statuslines/    # Status line scripts
 ```
 
 Only `src/**/*` is included in the published package.
