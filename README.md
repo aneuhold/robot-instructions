@@ -101,7 +101,9 @@ Your general instructions
 
 `src/statuslines/` holds shell scripts that run the "status line" concept in various robot systems.
 
-- `context-usage.sh` shows context-window usage and nothing else: `ctx 27% (54k/1M)`, with the percentage green below 50, yellow from 50, and red from 80.
+- `context-usage.sh` shows context-window usage and prompt cache warmth: `ctx 27% (54k/1M) · cache warm (42m)`.
+  - The percentage is green below 50, yellow from 50, and red from 80.
+  - The cache reads green `warm` with the whole minutes left before it expires (`<1m` in the last minute), or red `stale` once it has expired.
 
 <details>
 <summary>For Claude Code</summary>
@@ -112,10 +114,15 @@ Add the script to `~/.claude/settings.json`:
 {
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/node_modules/@aneuhold/robot-instructions/src/statuslines/context-usage.sh"
+    "command": "bash ~/.claude/node_modules/@aneuhold/robot-instructions/src/statuslines/context-usage.sh",
+    "refreshInterval": 300
   }
 }
 ```
+
+`refreshInterval` re-runs the script every 300 seconds on top of the event-driven updates, so the minutes left keep counting down while the session is idle. Claude Code also re-runs the script when the cache expires, so the switch to `stale` is on time regardless of the interval. See [how status lines update](https://code.claude.com/docs/en/statusline#how-status-lines-work).
+
+The cache segment reads the `prompt_cache` field, which requires Claude Code v2.1.251 or later. It shows `cache --` until the session's first API response.
 
 ---
 

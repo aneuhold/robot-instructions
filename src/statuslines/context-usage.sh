@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Code status line. Shows the session's context-window usage and nothing else.
+# Claude Code status line. Shows the session's context-window usage and prompt cache warmth.
 
 input=$(cat)
 
@@ -24,36 +24,57 @@ format_tokens() {
   fi
 }
 
+# Whole minutes left, or <1m under a minute: 2530 -> 42m.
+format_remaining() {
+  if [ "$1" -ge 60 ]; then
+    printf '%dm' $(($1 / 60))
+  else
+    printf '<1m'
+  fi
+}
+
 fields=$(printf '%s' "$input" | jq -r '
-  .context_window
-  | select(. != null)
-  | [(.used_percentage // 0), (.total_input_tokens // 0), (.context_window_size // "")]
+  [
+    (.context_window | if . then .used_percentage // 0 else "" end),
+    (.context_window.total_input_tokens // 0),
+    (.context_window.context_window_size // ""),
+    (.prompt_cache | if . == null then "" elif .warm and (.expires_at // 0) > now then "warm" else "stale" end),
+    ((.prompt_cache.expires_at // now) - now | floor)
+  ]
   | join("|")
 ' 2>/dev/null)
 
-if [ -z "$fields" ]; then
-  printf '%sctx --%s' "$DIM" "$RESET"
-  exit 0
-fi
+IFS='|' read -r used_pct used_tokens window_size cache_state cache_seconds_left <<< "$fields"
 
-IFS='|' read -r used_pct used_tokens window_size <<< "$fields"
+ctx_segment() {
+  # Round used_pct to a whole number in case it arrives as a decimal.
+  local pct color
+  pct=$(awk -v n="$used_pct" 'BEGIN { if (n ~ /^[0-9]+(\.[0-9]+)?$/) printf "%.0f", n; else print "" }')
 
-# Round used_pct to a whole number in case it arrives as a decimal.
-used_pct=$(awk -v n="$used_pct" 'BEGIN { if (n ~ /^[0-9]+(\.[0-9]+)?$/) printf "%.0f", n; else print "" }')
+  if [ -z "$pct" ]; then
+    printf '%sctx --%s' "$DIM" "$RESET"
+    return
+  fi
 
-if [ -z "$used_pct" ]; then
-  printf '%sctx --%s' "$DIM" "$RESET"
-  exit 0
-fi
+  if [ "$pct" -ge 80 ]; then
+    color=$RED
+  elif [ "$pct" -ge 50 ]; then
+    color=$YELLOW
+  else
+    color=$GREEN
+  fi
 
-if [ "$used_pct" -ge 80 ]; then
-  color=$RED
-elif [ "$used_pct" -ge 50 ]; then
-  color=$YELLOW
-else
-  color=$GREEN
-fi
+  printf '%sctx %s%s%%%s %s(%s/%s)%s' \
+    "$DIM" "$color" "$pct" "$RESET" \
+    "$DIM" "$(format_tokens "$used_tokens")" "$(format_tokens "$window_size")" "$RESET"
+}
 
-printf '%sctx %s%s%%%s %s(%s/%s)%s' \
-  "$DIM" "$color" "$used_pct" "$RESET" \
-  "$DIM" "$(format_tokens "$used_tokens")" "$(format_tokens "$window_size")" "$RESET"
+cache_segment() {
+  case $cache_state in
+    warm) printf '%scache %swarm%s %s(%s)%s' "$DIM" "$GREEN" "$RESET" "$DIM" "$(format_remaining "$cache_seconds_left")" "$RESET" ;;
+    stale) printf '%scache %sstale%s' "$DIM" "$RED" "$RESET" ;;
+    *) printf '%scache --%s' "$DIM" "$RESET" ;;
+  esac
+}
+
+printf '%s %s·%s %s' "$(ctx_segment)" "$DIM" "$RESET" "$(cache_segment)"
