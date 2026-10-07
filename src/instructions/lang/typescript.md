@@ -6,7 +6,8 @@
 - Where a value arrives untyped at a system boundary (`JSON.parse`, file reads, wire responses, incorrect library types), `unknown` is the staging type. Narrow it with a type guard or runtime schema before use. It never reaches the rest of the code unnarrowed.
 - Never use `as`. Refactor, reach for generics, or narrow with a type guard instead. `as unknown as X` falls under the same rule. If nothing else works, ask, and do not assume permission is granted.
 - Never use the `!` non-null assertion operator. Check for null / undefined properly if it can be null.
-- Add explicit types when unclear; extract complex object types to separate `type` declarations. Inline types only for single properties.
+- Declare a new type only when no existing type models the value and more than one function or method uses it. Otherwise reuse the existing type, let TypeScript infer it, or inline it.
+- Put a new type, in order of preference, in the existing types file holding the types it works with, a types file with similar types, or a new types file named and placed per the repo's conventions. Never at the top of a file with existing code.
 - Let TypeScript infer a return type when the body returns a fully typed value. Variables get explicit types. Where the project's lint config requires explicit return types, follow it.
 - Use PascalCase for type names.
 - Prefix generic type parameters with `T` (e.g. `TSubscription`, `TResult`), so they read differently from concrete types.
